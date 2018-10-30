@@ -1,0 +1,16 @@
+{
+	"scores" : {
+		"-LPgdefault" : {
+			"name" : "Sven",
+			"score" : "100"
+		},
+		"Random" : {
+			"name" : "Magnus",
+			"score" : "999"
+		},
+		"Someone" : {
+			"name" : "Peter",
+			"score" : "001"
+		}
+	}
+}

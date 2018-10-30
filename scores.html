@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Firebase JS Read and Write</title>
+<script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
+	
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBbZStEBAF4itK0jJe_Kvjh6_YovcFBJrY",
+    authDomain: "strongyou-project.firebaseapp.com",
+    databaseURL: "https://strongyou-project.firebaseio.com",
+    projectId: "strongyou-project",
+    storageBucket: "strongyou-project.appspot.com",
+    messagingSenderId: "160855929292"
+  };
+  firebase.initializeApp(config);
+</script>
+</head>
+
+<body>
+
+<h2>All player scores</h2>	
+
+	
+<div id="output"> </div>	
+<hr>	
+<form>
+	<p><input type="text" id="name" placeholder="player name..." required></p>	
+	<p><input type="number" id="score" placeholder="player score..." required></p>
+	<p><button type="submit" id="submit" required>Create Player</button></p>	
+</form>
+<script>
+var database = firebase.database();
+	
+var submitButton = document.getElementById('submit');
+	submitButton.addEventListener('click', createPlayer);
+	
+	
+	// read from database
+	database.ref('scores/').once('value', function(snapshot) {
+   		snapshot.forEach(function (childSnap) {
+			// storing all keys (i.e. "player1", "player2", ... )
+			let allPlayers = childSnap.child('name').val();
+			// storing all values of the child node "score"
+			let allScores = childSnap.child('score').val();
+  			console.log(allScores);
+			// rendering the keys and values
+			document.getElementById('output').innerHTML += allPlayers + ': ' + allScores + '<br>';
+ 		});
+  });
+	// write from database
+function createPlayer(){
+	var name = document.getElementById('name').value;
+	var score = document.getElementById('score').value;
+	// console.log(name + ', ' + score);
+	// storing user input in an object
+	var playerData = {
+		"name" : name, 
+		"score" : score
+	}
+	// generate a firebase key for the object
+	var newPLayer = database.ref('scores/').push().key;
+	// update database with the player object
+	database.ref('scores/' + newPLayer).update(playerData);
+}
+</script>	
+<hr>
+
+	
+	
+</body>
+</html>
